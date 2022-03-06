@@ -48,7 +48,7 @@ app.use(express.json());
 app.use(cors());
 
 
-const whitelist = ['http://localhost:3000', 'http://localhost:4000', 'https://drfitness.herokuapp.com']
+const whitelist = ['http://localhost:3000', 'http://localhost:4000', 'https://drfitnessnew.herokuapp.com']
 const corsOptions = {
   origin: function (origin, callback) {
     console.log("** Origin of request " + origin)
@@ -66,7 +66,7 @@ app.use(cors(corsOptions))
 if (process.env.NODE_ENV === 'production'){
   app.use(express.static(path.join(__dirname,'client/build')));
   app.get("*", (req, res) => {
-    req.sendfile(path.resolve(__dirname,'client/build','index.html'));
+    req.sendFile(path.resolve(__dirname,'client/build','index.html'));
     res.send("Add your Stripe Secret Key to the .require('stripe') statement!");
   });
 }
