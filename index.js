@@ -41,15 +41,22 @@ const cors = require("cors");
 const express = require("express");
 const stripe = require("stripe")("sk_test_51KV05EE6nbSSxCIjJYV0hJHMh9J1n9nSsD2jOk1tO0PapVypyuzNxvSPXD6OrAOaF77usfYFo4MaO2fYgLwrbnvB00M2mvLRQp");
 const uuid = require("uuid/v4");
-
+const path = require('path');
 const app = express();
 
 app.use(express.json());
 app.use(cors());
 
-app.get("/", (req, res) => {
-  res.send("Add your Stripe Secret Key to the .require('stripe') statement!");
-});
+
+if (process.env.NODE_ENV === 'production'){
+  app.use(express.static(path.join(__dirname,'client/build')));
+  app.get("*", (req, res) => {
+    req.sendfile(path.resolve(__dirname,'client/build','index.html'));
+    res.send("Add your Stripe Secret Key to the .require('stripe') statement!");
+  });
+}
+
+
 
 app.post("/checkout", async (req, res) => {
   console.log("Request:", req.body);
